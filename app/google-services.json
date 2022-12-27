@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "490212156618",
+    "project_id": "spark-1e90d",
+    "storage_bucket": "spark-1e90d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:490212156618:android:3408e87f25846f22dc4033",
+        "android_client_info": {
+          "package_name": "com.saba.spark"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "490212156618-ta3g6b1iu8opr46jj2amjb125pgb8q2g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCiRv3YljaXln97_lSh5LbPgAYqo-KlmB4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "490212156618-ta3g6b1iu8opr46jj2amjb125pgb8q2g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

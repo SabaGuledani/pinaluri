@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginFragment">
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.saba.spark.LogIn"
+        android:label="login"
+        tools:layout="@layout/fragment_log_in" >
+        <action
+            android:id="@+id/action_loginFragment_to_ChangePassword"
+            app:destination="@id/ChangePassword" />
+        <action
+            android:id="@+id/action_loginFragment_to_RegistrationFragment"
+            app:destination="@id/RegistrationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/RegistrationFragment"
+        android:name="com.saba.spark.RegistrationFragment"
+        android:label="registration"
+        tools:layout="@layout/fragment_registration"/>
+    <fragment
+        android:id="@+id/ChangePassword"
+        android:name="com.saba.spark.PasswordChangeFragment"
+        android:label="change password"
+        tools:layout="@layout/fragment_password_change"/>
+
+
+
+</navigation>
