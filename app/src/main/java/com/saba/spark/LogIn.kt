@@ -35,13 +35,17 @@ class LogIn : Fragment(R.layout.fragment_log_in) {
                     }
                 }
         }
-        binding.noPassword.setOnClickListener {
+        binding.changePassword.setOnClickListener {
             val action = LogInDirections.actionLoginFragmentToChangePassword()
             findNavController().navigate(action)
 
         }
         binding.noAcc.setOnClickListener {
             val action = LogInDirections.actionLoginFragmentToRegistrationFragment()
+            findNavController().navigate(action)
+        }
+        binding.noPassword.setOnClickListener {
+            val action = LogInDirections.actionLoginFragmentToResetPasswordFragment()
             findNavController().navigate(action)
         }
 

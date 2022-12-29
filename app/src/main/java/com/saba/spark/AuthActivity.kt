@@ -17,6 +17,7 @@ class AuthActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+        supportActionBar?.hide()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_auth)
         navController = findNavController(R.id.nav_host_fragment)

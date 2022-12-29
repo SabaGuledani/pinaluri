@@ -1,5 +1,6 @@
 package com.saba.spark
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -20,14 +21,26 @@ class PasswordChangeFragment : Fragment(R.layout.fragment_password_change) {
         binding.resetBtn.setOnClickListener {
             val email = (binding.email).editText?.text.toString()
             val password = (binding.password).editText?.text.toString()
-            val repeatedPassword = (binding.passwordRepeat).editText?.text.toString()
-
-            if (password == repeatedPassword){
-
-
-            }else{
-                Toast.makeText(context, "check the password cowboy!", Toast.LENGTH_SHORT).show()
-            }
+            val newPassword = (binding.passwordNew).editText?.text.toString()
+            
+            FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener { 
+                    if(it.isSuccessful){
+                        FirebaseAuth.getInstance()
+                            .currentUser?.updatePassword(newPassword)
+                            ?.addOnCompleteListener {
+                                if(it.isSuccessful){
+                                    val intent = Intent(context,MainActivity::class.java)
+                                    startActivity(intent)
+                                    activity?.finish()
+                                }else{
+                                    Toast.makeText(context, "new password is less than 6 characters", Toast.LENGTH_SHORT).show()   
+                                }
+                            }
+                    }else{
+                        Toast.makeText(context, "check your password and email", Toast.LENGTH_SHORT).show()
+                    }
+                }
         }
 
 

@@ -15,6 +15,9 @@
         <action
             android:id="@+id/action_loginFragment_to_RegistrationFragment"
             app:destination="@id/RegistrationFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_resetPasswordFragment"
+            app:destination="@id/resetPasswordFragment" />
     </fragment>
     <fragment
         android:id="@+id/RegistrationFragment"
@@ -26,7 +29,15 @@
         android:name="com.saba.spark.PasswordChangeFragment"
         android:label="change password"
         tools:layout="@layout/fragment_password_change"/>
-
+    <fragment
+        android:id="@+id/resetPasswordFragment"
+        android:name="com.saba.spark.ResetPasswordFragment"
+        android:label="fragment_reset_password"
+        tools:layout="@layout/fragment_reset_password" >
+        <action
+            android:id="@+id/action_resetPasswordFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
 
 
 </navigation>
