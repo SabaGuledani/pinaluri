@@ -9,7 +9,9 @@
         android:id="@+id/badHabits"
         android:name="com.saba.spark.badHabits"
         android:label="fragment_bad_habits"
-        tools:layout="@layout/fragment_bad_habits" />
+        tools:layout="@layout/fragment_bad_habits" >
+
+    </fragment>
     <fragment
         android:id="@+id/goodHabits"
         android:name="com.saba.spark.GoodHabits"
