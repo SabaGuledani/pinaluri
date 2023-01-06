@@ -1,11 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".LogIn"
-    android:background="@drawable/wildwestback">
+    android:background="@drawable/IMG_1065"
+    tools:context=".LogIn">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed-light"
+        android:text="Welcome Back!"
+        android:textColor="@color/white"
+        android:textSize="27sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -19,22 +33,25 @@
         app:layout_constraintHorizontal_bias="0.157"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.305">
+        app:layout_constraintVertical_bias="0.5">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/email"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
-            android:hint="email"
-            app:boxStrokeWidth="2.5dp"
+            android:hint="E-mail"
+            app:boxBackgroundColor="#8BFFFFFF"
             app:boxCornerRadiusBottomEnd="30dp"
             app:boxCornerRadiusBottomStart="30dp"
             app:boxCornerRadiusTopEnd="30dp"
             app:boxCornerRadiusTopStart="30dp"
             app:boxStrokeColor="@color/black"
-            app:hintTextColor="@color/black">
+            app:boxStrokeWidth="2.5dp"
+            app:hintTextColor="@color/black"
+            app:startIconDrawable="@drawable/ic_baseline_email_24">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -48,15 +65,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:hint="password"
+            android:hint="Password"
 
+            app:boxBackgroundColor="#8BFFFFFF"
             app:boxCornerRadiusBottomEnd="30dp"
             app:boxCornerRadiusBottomStart="30dp"
             app:boxCornerRadiusTopEnd="30dp"
             app:boxCornerRadiusTopStart="30dp"
             app:boxStrokeColor="@color/black"
             app:boxStrokeWidth="2.5dp"
-            app:endIconMode="password_toggle">
+            app:endIconMode="password_toggle"
+            app:startIconDrawable="@drawable/ic_baseline_shield_24">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -65,33 +84,8 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/no_acc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="I don't have an account"
-            android:textSize="20sp"
-            style="@style/textStyle"
-            android:layout_gravity="center"
-            android:layout_marginTop="12dp"/>
-        <TextView
-            android:id="@+id/no_password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="I don't remember my password "
-            android:textSize="20sp"
-            style="@style/textStyle"
-            android:layout_gravity="center"
-            android:layout_marginTop="12dp"/>
-        <TextView
-            android:id="@+id/change_password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="I want to change password and log in"
-            android:textSize="20sp"
-            style="@style/textStyle"
-            android:layout_gravity="center"
-            android:layout_marginTop="12dp"/>
+
+
 
     </LinearLayout>
 
@@ -99,15 +93,51 @@
         android:id="@+id/log_in_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="#3E567C"
         android:forceDarkAllowed="false"
-        android:backgroundTint="#55130E"
         android:text="log in"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.541" />
+        app:layout_constraintVertical_bias="0.1" />
+
+    <TextView
+        android:id="@+id/no_acc"
+        style="@style/textStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:drawableLeft="@drawable/ic_baseline_no_accounts_24"
+        android:drawableTint="#C8FFFFFF"
+        android:elegantTextHeight="true"
+        android:fontFamily="sans-serif-thin"
+        android:text="I don't have an account"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:emojiCompatEnabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/log_in_btn" />
+
+    <TextView
+        android:id="@+id/no_password"
+        style="@style/textStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:drawableTint="#C8FFFFFF"
+        android:elegantTextHeight="true"
+        android:fitsSystemWindows="false"
+        android:fontFamily="sans-serif-thin"
+        android:text="I don't remember my password"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:drawableLeftCompat="@drawable/ic_baseline_question_mark_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/no_acc" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
