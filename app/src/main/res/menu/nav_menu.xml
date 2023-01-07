@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="bad habits"
+    <item android:title="your habtis"
         android:id="@+id/badHabits"
         android:icon="@drawable/ic_android_black_24dp"
         />
-    <item android:title="good habits"
+    <item android:title="finances"
         android:id="@+id/GoodHabits"
-        android:icon="@drawable/ic_android_black_24dp"/>
-    <item android:title="procrastination"
+        android:icon="@drawable/ic_android_black_24dp" />
+    <item android:title="mesame"
         android:id="@+id/UglyHabit"
         android:icon="@drawable/ic_android_black_24dp"/>
 
