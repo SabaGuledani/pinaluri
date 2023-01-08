@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue_purple">
+    android:background="@color/blue_purple"
+    android:clickable="true">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -112,6 +113,7 @@
             android:layout_height="wrap_content"
             android:hint="money spent per day"
             app:boxBackgroundColor="#8BFFFFFF"
+
             app:boxCornerRadiusBottomEnd="15dp"
             app:boxCornerRadiusBottomStart="15dp"
             app:boxCornerRadiusTopEnd="15dp"
@@ -125,7 +127,7 @@
             >
 
             <com.google.android.material.textfield.TextInputEditText
-
+                android:inputType="number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 />

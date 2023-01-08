@@ -2,6 +2,7 @@ package com.saba.spark
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.navigation.NavigationBarView
@@ -56,6 +57,7 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         if (viewPager2.currentItem == 0){
             super.onBackPressed()
+
         }else{
             viewPager2.currentItem = viewPager2.currentItem - 1
         }

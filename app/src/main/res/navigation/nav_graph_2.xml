@@ -11,6 +11,7 @@
         android:label="fragment_bad_habits"
         tools:layout="@layout/fragment_bad_habits" >
 
+
     </fragment>
     <fragment
         android:id="@+id/goodHabits"
@@ -22,4 +23,5 @@
         android:name="com.saba.spark.UglyHabit"
         android:label="fragment_ugly_habit"
         tools:layout="@layout/fragment_ugly_habit" />
+
 </navigation>
