@@ -1,15 +1,13 @@
 package com.saba.spark
 
 import android.animation.ObjectAnimator
-import android.app.Dialog
-import android.app.ProgressDialog.show
-import android.content.DialogInterface
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -20,6 +18,8 @@ import com.google.firebase.database.*
 import com.saba.spark.databinding.FragmentBadHabitsBinding
 import com.saba.spark.databinding.HabitCreateDialogBinding
 import com.saba.spark.databinding.HabitOpenDialogFragmentBinding
+import java.time.LocalDateTime
+import java.util.Calendar
 import java.util.concurrent.TimeUnit
 
 
@@ -27,13 +27,22 @@ class badHabits : Fragment(R.layout.fragment_bad_habits) {
     private lateinit var binding: FragmentBadHabitsBinding
     private lateinit var habitList: ArrayList<Habit>
     private lateinit var dbref: DatabaseReference
+
+
     private lateinit var habitRecyclerviewAdapter: HabitRecyclerviewAdapter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentBadHabitsBinding.bind(view)
 
+        var sharedPrefs = context?.getSharedPreferences("date", Context.MODE_PRIVATE)
+        val editor = sharedPrefs?.edit()
 
-        var senderuid = FirebaseAuth.getInstance().currentUser?.uid
+        var calendar = Calendar.getInstance()
+        var today =
+            ("${calendar.get(Calendar.YEAR)}" + "${calendar.get(Calendar.DAY_OF_YEAR)}").toInt()
+
+
+        var useruid = FirebaseAuth.getInstance().currentUser?.uid
 
         val recyclerview = binding.recyclerviewHabit
         recyclerview.layoutManager = LinearLayoutManager(context)
@@ -44,9 +53,7 @@ class badHabits : Fragment(R.layout.fragment_bad_habits) {
         recyclerview.adapter = habitRecyclerviewAdapter
 
 
-
-
-        dbref.child("users").child("$senderuid").addValueEventListener(object : ValueEventListener {
+        dbref.child("users").child("$useruid").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 habitList.clear()
                 for (postsnapshot in snapshot.children) {
@@ -59,10 +66,14 @@ class badHabits : Fragment(R.layout.fragment_bad_habits) {
             }
 
             override fun onCancelled(error: DatabaseError) {
-
             }
 
         })
+
+
+
+
+
 
 
 
@@ -105,39 +116,35 @@ class badHabits : Fragment(R.layout.fragment_bad_habits) {
                     val habitName = binding.habitet.editText?.text.toString()
                     val habitProgress = binding.tiet.text.toString()
                     val dailyUseMoney = binding.money.editText?.text.toString()
-                    val status = "status:active"
+                    val status = "active"
                     val progressnow = "0"
                     if (habitName.isNotEmpty() && habitProgress.isNotEmpty() && dailyUseMoney.isNotEmpty()) {
 
                         val habitObject =
                             Habit(habitName, habitProgress, dailyUseMoney, status, progressnow)
 
-                        dbref.child("users").child("$senderuid").child(habitName)
+                        dbref.child("users").child("$useruid").child(habitName)
                             .setValue(habitObject)
 
                         dismiss()
-
-
                     }
-
                 }
                 binding.exitIV.setOnClickListener {
                     dismiss()
-
-
                 }
-
-
-
             }
-
-
-
-
-
-
-
         }
+
+
+
+
+
+
+
+
+
+
+
 
         class HabitDialog(var position: Int) : DialogFragment() {
             var habitObject = habitList[position]
@@ -155,23 +162,71 @@ class badHabits : Fragment(R.layout.fragment_bad_habits) {
             override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
                 super.onViewCreated(view, savedInstanceState)
 
+                var progressbar = binding.circularProgressIndicator
+                dbref.child("users").child("$useruid").child("${habitObject.habitName}")
+                    .child("habitprogressnow").addValueEventListener(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            binding.progressTV.text =
+                                snapshot.value.toString() + "/" + habitObject.habitprogress
+                            binding.daysRemaining.text =
+                                "Days remaining: " + (habitObject.habitprogress.toInt() - snapshot.value.toString()
+                                    .toInt()).toString()
+
+                            progressbar.max = habitObject.habitprogress.toInt() * 1000
+                            ObjectAnimator.ofInt(
+                                progressbar, "progress", (snapshot.value.toString().toInt()) * 1000
+                            ).setDuration(1700).start()
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+
+                        }
+
+                    })
                 binding.habitName.text = habitObject.habitName
                 binding.progressTV.text =
-                    habitObject.habitprogressnow.toString() + "/" + habitObject.habitprogress.toString()
-                var progressbar = binding.circularProgressIndicator
+                    habitObject.habitprogressnow + "/" + habitObject.habitprogress
+
+                binding.statusTV.text = "status: " + habitObject.status
 
                 progressbar.max = habitObject.habitprogress.toInt() * 1000
-                ObjectAnimator.ofInt(progressbar,"progress",(habitObject.habitprogressnow.toInt())*1000)
-                    .setDuration(1700)
-                    .start()
+                ObjectAnimator.ofInt(
+                    progressbar, "progress", (habitObject.habitprogressnow.toInt()) * 1000
+                ).setDuration(1700).start()
 
-                binding.daysRemaining.text = "Days remaining:\n" + (habitObject.habitprogress.toInt() - habitObject.habitprogressnow.toInt())
+                binding.daysRemaining.text =
+                    "Days remaining: " + (habitObject.habitprogress.toInt() - habitObject.habitprogressnow.toInt())
 
+                binding.progressTV.setOnLongClickListener {
+                    var lastTime = sharedPrefs?.getInt("today day", 1)
+
+
+
+                    if (today != lastTime) {
+                        dbref.child("users").child("$useruid").child("${habitObject.habitName}")
+                            .child("habitprogressnow")
+                            .setValue((habitObject.habitprogressnow.toInt() + 1).toString())
+                        editor?.putInt("today day", today)
+                        editor?.apply()
+                    } else {
+                        Toast.makeText(context, "hey you already clicked today", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                    true
+
+                }
+            binding.closeDialog.setOnClickListener {
+                dismiss()
             }
 
 
 
+            }
+
+
         }
+
+
 
 
         fun showDialog(dialogFragment: DialogFragment) {
@@ -181,15 +236,11 @@ class badHabits : Fragment(R.layout.fragment_bad_habits) {
             val transaction = fragmentManager.beginTransaction()
 
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            transaction
-                .add(android.R.id.content, newFragment)
-                .addToBackStack(null)
-                .commit()
+            transaction.add(android.R.id.content, newFragment).addToBackStack(null).commit()
 
         }
         binding.createHabitButton.setOnClickListener {
             showDialog(CustomDialogFragment())
-
         }
         habitRecyclerviewAdapter.setOnItemClickListener(object :
             HabitRecyclerviewAdapter.onItemClickListener {
@@ -201,7 +252,6 @@ class badHabits : Fragment(R.layout.fragment_bad_habits) {
         }
 
         )
-
 
 
     }

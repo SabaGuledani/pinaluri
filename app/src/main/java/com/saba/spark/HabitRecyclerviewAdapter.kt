@@ -1,11 +1,14 @@
 package com.saba.spark
 
+import android.animation.ObjectAnimator
 import android.content.Context
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.appcompat.view.menu.MenuView.ItemView
 import androidx.recyclerview.widget.RecyclerView
 
 class HabitRecyclerviewAdapter(val habitList:ArrayList<Habit>):
@@ -25,6 +28,10 @@ RecyclerView.Adapter<HabitRecyclerviewAdapter.HabitViewHolder>(){
         val habitName = itemView.findViewById<TextView>(R.id.habit_name)
         val habitProgress = itemView.findViewById<TextView>(R.id.habit_progress)
         val status = itemView.findViewById<TextView>(R.id.active_status)
+        var progressBar = itemView.findViewById<ProgressBar>(R.id.habit_progress_bar)
+        var daysRemaining = itemView.findViewById<TextView>(R.id.days_remaining)
+
+
 
         init {
             itemView.setOnClickListener {
@@ -45,6 +52,14 @@ RecyclerView.Adapter<HabitRecyclerviewAdapter.HabitViewHolder>(){
         holder.habitName.text = currentHabit.habitName
         holder.habitProgress.text = currentHabit.habitprogressnow.toString()+ "/" + currentHabit.habitprogress.toString()
         holder.status.text = currentHabit.status
+        holder.progressBar.max = currentHabit.habitprogress.toInt() * 1000
+        ObjectAnimator.ofInt(holder.progressBar,"progress",(currentHabit.habitprogressnow.toInt())*1000)
+            .setDuration(1400)
+            .start()
+
+        holder.daysRemaining.text = "Days remaining: " + (currentHabit.habitprogress.toInt() - currentHabit.habitprogressnow.toInt())
+
+
     }
 
 

@@ -4,20 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="120dp"
-    android:background="@drawable/btn_design"
     android:layout_margin="10dp"
-    >
+    android:background="@drawable/btn_design">
+
+    <TextView
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="status: "
+        android:textColor="#393939"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.84"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
 
     <TextView
         android:id="@+id/active_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="status:active"
-        android:textColor="#393939"
+        android:text="active"
+        android:textColor="#1DFB67"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.907"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/status"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
@@ -44,27 +57,39 @@
             android:paddingLeft="19dp"
             android:text="name of habit"
             android:textColor="@color/white"
-            android:textSize="24sp"
-            />
+            android:textSize="25.5sp" />
 
         <TextView
             android:id="@+id/habit_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="3/10"
             android:fontFamily="@font/raleway_regular"
-            android:textStyle="bold"
+            android:text="3/10"
             android:textColor="@color/white"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/days_remaining"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Days remaining:"
+        android:textSize="14sp"
+        android:layout_marginBottom="2dp"
+        android:textColor="@color/blue"
+        app:layout_constraintBottom_toTopOf="@+id/habit_progress_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.054"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/habit_progress_bar"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:progress="25"
+        android:forceDarkAllowed="false"
         app:indicatorColor="@color/blue_purple"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blue"
-    android:clickable="true">
+    android:clickable="true"
+    android:focusable="true"
+    >
 
     <ImageView
         android:id="@+id/close_dialog"
@@ -17,7 +19,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:forceDarkAllowed="false"/>
 
     <TextView
         android:id="@+id/habitName"
@@ -30,7 +33,8 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.097" />
+        app:layout_constraintVertical_bias="0.097"
+        android:forceDarkAllowed="false"/>
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/circularProgressIndicator"
@@ -45,7 +49,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.5"
         app:trackCornerRadius="10dp"
-        app:trackThickness="13dp" />
+        app:trackThickness="13dp"
+        android:forceDarkAllowed="false"/>
 
     <TextView
         android:id="@+id/progressTV"
@@ -57,7 +62,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/circularProgressIndicator"
         app:layout_constraintEnd_toEndOf="@+id/circularProgressIndicator"
         app:layout_constraintStart_toStartOf="@+id/circularProgressIndicator"
-        app:layout_constraintTop_toTopOf="@+id/circularProgressIndicator" />
+        app:layout_constraintTop_toTopOf="@+id/circularProgressIndicator"
+        android:forceDarkAllowed="false"/>
 
     <TextView
         android:id="@+id/statusTV"
@@ -70,7 +76,8 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/circularProgressIndicator"
-        app:layout_constraintVertical_bias="0.217" />
+        app:layout_constraintVertical_bias="0.217"
+        android:forceDarkAllowed="false"/>
 
     <TextView
         android:id="@+id/days_remaining"
@@ -83,7 +90,8 @@
         app:layout_constraintHorizontal_bias="0.288"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/statusTV"
-        app:layout_constraintVertical_bias="0.509" />
+        app:layout_constraintVertical_bias="0.509"
+        android:forceDarkAllowed="false"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
