@@ -2,13 +2,18 @@ package com.saba.spark
 
 import android.animation.ObjectAnimator
 import android.content.Context
+import android.util.Log
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.MarginLayoutParams
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.view.menu.MenuView.ItemView
+import androidx.core.view.marginRight
+import androidx.core.view.setMargins
+import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
 
 class HabitRecyclerviewAdapter(val habitList:ArrayList<Habit>):
@@ -27,15 +32,19 @@ RecyclerView.Adapter<HabitRecyclerviewAdapter.HabitViewHolder>(){
     class HabitViewHolder(itemView:View,listener:onItemClickListener):RecyclerView.ViewHolder(itemView){
         val habitName = itemView.findViewById<TextView>(R.id.habit_name)
         val habitProgress = itemView.findViewById<TextView>(R.id.habit_progress)
-        val status = itemView.findViewById<TextView>(R.id.active_status)
+        var status = itemView.findViewById<TextView>(R.id.active_status)
         var progressBar = itemView.findViewById<ProgressBar>(R.id.habit_progress_bar)
         var daysRemaining = itemView.findViewById<TextView>(R.id.days_remaining)
+        var statusText = itemView.findViewById<TextView>(R.id.status)
+
 
 
 
         init {
             itemView.setOnClickListener {
                 listener.onItemClick(adapterPosition)
+
+
 
             }
         }
@@ -52,6 +61,16 @@ RecyclerView.Adapter<HabitRecyclerviewAdapter.HabitViewHolder>(){
         holder.habitName.text = currentHabit.habitName
         holder.habitProgress.text = currentHabit.habitprogressnow.toString()+ "/" + currentHabit.habitprogress.toString()
         holder.status.text = currentHabit.status
+        if(holder.status.text.toString() == "completed"){
+            val param = ((holder.statusText).layoutParams as MarginLayoutParams)
+            param.setMargins(0,0,100,0)
+            holder.statusText.layoutParams = param
+            Log.d("racxa","rac")
+        }else{
+            val param = ((holder.statusText).layoutParams as MarginLayoutParams)
+            param.setMargins(0,0,0,0)
+            holder.statusText.layoutParams = param
+        }
         holder.progressBar.max = currentHabit.habitprogress.toInt() * 1000
         ObjectAnimator.ofInt(holder.progressBar,"progress",(currentHabit.habitprogressnow.toInt())*1000)
             .setDuration(1400)

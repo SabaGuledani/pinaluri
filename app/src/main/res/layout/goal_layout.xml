@@ -7,12 +7,14 @@
     android:layout_margin="10dp"
     android:background="@drawable/btn_design">
 
+
     <TextView
         android:id="@+id/status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="status: "
         android:textColor="#393939"
+
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.84"
@@ -25,8 +27,9 @@
         android:id="@+id/active_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="active"
+        android:text="completed"
         android:textColor="#1DFB67"
+
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

@@ -34,13 +34,13 @@ class badHabits : Fragment(R.layout.fragment_bad_habits) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentBadHabitsBinding.bind(view)
 
-        var sharedPrefs = context?.getSharedPreferences("date", Context.MODE_PRIVATE)
-        val editor = sharedPrefs?.edit()
+
 
         var calendar = Calendar.getInstance()
         var today =
             ("${calendar.get(Calendar.YEAR)}" + "${calendar.get(Calendar.DAY_OF_YEAR)}").toInt()
-
+        var sharedPrefs = context?.getSharedPreferences("date", Context.MODE_PRIVATE)
+        var editor = sharedPrefs?.edit()
 
         var useruid = FirebaseAuth.getInstance().currentUser?.uid
 
@@ -141,11 +141,6 @@ class badHabits : Fragment(R.layout.fragment_bad_habits) {
 
 
 
-
-
-
-
-
         class HabitDialog(var position: Int) : DialogFragment() {
             var habitObject = habitList[position]
 
@@ -198,19 +193,30 @@ class badHabits : Fragment(R.layout.fragment_bad_habits) {
                     "Days remaining: " + (habitObject.habitprogress.toInt() - habitObject.habitprogressnow.toInt())
 
                 binding.progressTV.setOnLongClickListener {
-                    var lastTime = sharedPrefs?.getInt("today day", 1)
+
+                    var lastTime = sharedPrefs?.getInt("today day ${habitObject.habitName}", 1)
 
 
 
-                    if (today != lastTime) {
-                        dbref.child("users").child("$useruid").child("${habitObject.habitName}")
-                            .child("habitprogressnow")
-                            .setValue((habitObject.habitprogressnow.toInt() + 1).toString())
-                        editor?.putInt("today day", today)
-                        editor?.apply()
+                    if (today != lastTime && habitObject.habitprogressnow != habitObject.habitprogress) {
+
+                            dbref.child("users").child("$useruid").child("${habitObject.habitName}")
+                                .child("habitprogressnow")
+                                .setValue((habitObject.habitprogressnow.toInt() + 1).toString())
+                            editor?.putInt("today day ${habitObject.habitName}", today)
+                            editor?.apply()
+
                     } else {
-                        Toast.makeText(context, "hey you already clicked today", Toast.LENGTH_SHORT)
-                            .show()
+                        if(today==lastTime && habitObject.habitprogressnow != habitObject.habitprogress){
+                            Toast.makeText(context, "hey you already clicked today", Toast.LENGTH_SHORT)
+                                .show()
+                        }else{
+                            dbref.child("users").child("$useruid").child("${habitObject.habitName}")
+                                .child("status").setValue("completed")
+                            binding.statusTV.text ="status: completed"
+
+                            Toast.makeText(context, "you successfully achieved your goal good job!", Toast.LENGTH_LONG).show()
+                        }
                     }
                     true
 
