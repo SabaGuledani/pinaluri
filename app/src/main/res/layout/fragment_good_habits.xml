@@ -51,7 +51,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/textView6"
+                    android:id="@+id/currentSavings"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-medium"
@@ -157,7 +157,7 @@
                     android:textSize="15sp" />
 
                 <TextView
-                    android:id="@+id/textView14"
+                    android:id="@+id/monthlySaving"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -178,11 +178,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Projected monthly saving"
+                    android:text="Projected yearly saving"
                     android:textSize="15sp" />
 
                 <TextView
-                    android:id="@+id/textView16"
+                    android:id="@+id/yearlySaving"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
