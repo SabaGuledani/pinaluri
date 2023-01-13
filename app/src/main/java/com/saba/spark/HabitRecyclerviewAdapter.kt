@@ -65,7 +65,7 @@ RecyclerView.Adapter<HabitRecyclerviewAdapter.HabitViewHolder>(){
             val param = ((holder.statusText).layoutParams as MarginLayoutParams)
             param.setMargins(0,0,100,0)
             holder.statusText.layoutParams = param
-            Log.d("racxa","rac")
+
         }else{
             val param = ((holder.statusText).layoutParams as MarginLayoutParams)
             param.setMargins(0,0,0,0)

@@ -12,7 +12,7 @@ import java.text.FieldPosition
 class MainActivity : AppCompatActivity() {
     private lateinit var binding:ActivityMainBinding
 
-    //////////// lizi aqedan naxe
+
     private lateinit var viewPager2: ViewPager2
     private lateinit var viewPager2Adapter: ViewPagerAdapter
     private val NavigationItemSelectedListener = NavigationBarView.OnItemSelectedListener {
@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         }
         false
     }
-    ///////////////
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.hide()
-/////////////////////   da aqedan kide
+
         viewPager2 = findViewById(R.id.view_pager)
         var bottomNavigationView = binding.navView
         viewPager2Adapter = ViewPagerAdapter(this)
@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
-///////////////////// aqamde
+
 
         }
     override fun onBackPressed() {

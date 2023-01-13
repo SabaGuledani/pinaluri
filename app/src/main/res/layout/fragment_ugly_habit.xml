@@ -10,22 +10,26 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        >
+
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/circlemgelisaxia"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:id="@+id/circleimg"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_gravity="center"
             android:layout_marginLeft="6dp"
             android:scaleType="centerCrop"
             app:shapeAppearanceOverlay="@style/circle"
             app:srcCompat="@drawable/btn_design"
+            android:layout_weight="1"
             />
 
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/habitet"
+            android:layout_weight="99"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -43,9 +47,22 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
+
                 android:layout_height="wrap_content" />
 
         </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/publishImgBtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/circle"
+            app:srcCompat="@drawable/ic_baseline_publish_24"
+            android:layout_weight="1"
+            />
+
+
     </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_share"
