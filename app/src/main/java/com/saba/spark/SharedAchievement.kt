@@ -1,15 +1,17 @@
 package com.saba.spark
 
 class SharedAchievement {
-    var profileImg:String = ""
-    var posterName:String = ""
+    var senderuid:String? = null
+    var profileImg:String? = null
+    var posterName:String? = null
     var time:String = ""
     var date:String = ""
     var achievement:String = ""
 
     constructor(){}
 
-    constructor(profileImg:String,posterName:String,time:String,date:String,achievement:String){
+    constructor(senderuid:String?,profileImg:String?,posterName:String?,time:String,date:String,achievement:String){
+        this.senderuid = senderuid
         this.profileImg = profileImg
         this.posterName = posterName
         this.time = time

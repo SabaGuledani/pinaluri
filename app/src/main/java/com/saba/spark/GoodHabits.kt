@@ -24,7 +24,8 @@ class GoodHabits : Fragment(R.layout.fragment_good_habits) {
         val moneySpentPerDay = binding.moneySpentPerDay
         val monthlySaving = binding.monthlySaving
         val yearlySaving = binding.yearlySaving
-
+        val startDate = binding.startDate
+        val currentSavings = binding.currentSavings
 
 
 
@@ -43,12 +44,8 @@ class GoodHabits : Fragment(R.layout.fragment_good_habits) {
                 var editmoney1 = mAlertDialog.findViewById<EditText>(R.id.editMoney)
                 var editMoney = editmoney1.text.toString()
                 moneySpentPerDay.setText(editMoney + " Gel")
-                Thread.sleep(1_000)
                 monthlySaving.setText( (editMoney.toInt() * 30).toString() + "Gel")
-                Thread.sleep(1_000)
                 yearlySaving.setText( (editMoney.toInt() * 30 * 12).toString() + "Gel")
-
-
 
             }
             cancel.setOnClickListener {
