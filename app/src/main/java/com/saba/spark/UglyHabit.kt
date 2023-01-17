@@ -71,7 +71,7 @@ class UglyHabit : Fragment(R.layout.fragment_ugly_habit) {
                     if(it.exists()){
                         val senderuid = senderuid
                         val posterImg = it.child("profileImg").value.toString()
-                        val posterName = it.child(" profileName").value.toString()
+                        val posterName = it.child("profileName").value.toString()
                         val time = time
                         val date = date
                         val achievement = binding.habitet.editText?.text.toString()

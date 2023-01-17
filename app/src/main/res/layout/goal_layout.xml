@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="120dp"
     android:layout_margin="10dp"
-    android:background="@drawable/btn_design">
+    android:background="@drawable/habit_item_back"
+    >
+
 
 
     <TextView
@@ -13,8 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="status: "
-        android:textColor="#393939"
-
+        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.84"
@@ -66,11 +67,10 @@
             android:id="@+id/habit_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/raleway_regular"
+            android:fontFamily="@font/asap_semibold"
             android:text="3/10"
             android:textColor="@color/white"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textSize="24sp" />
 
 
     </LinearLayout>
@@ -79,10 +79,9 @@
         android:id="@+id/days_remaining"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
         android:text="Days remaining:"
         android:textSize="14sp"
-        android:layout_marginBottom="2dp"
-        android:textColor="@color/blue"
         app:layout_constraintBottom_toTopOf="@+id/habit_progress_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.054"
@@ -93,7 +92,7 @@
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:forceDarkAllowed="false"
-        app:indicatorColor="@color/blue_purple"
+        app:indicatorColor="@color/purple_main"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

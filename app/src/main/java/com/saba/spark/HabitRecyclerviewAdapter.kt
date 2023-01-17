@@ -28,6 +28,14 @@ RecyclerView.Adapter<HabitRecyclerviewAdapter.HabitViewHolder>(){
     fun setOnItemClickListener(listener: onItemClickListener) {
         mlistener = listener
     }
+    fun getItem(position: Int):Habit{
+        var habitobjectTemp = habitList.get(position)
+        return habitobjectTemp
+    }
+    fun deleteItem(position: Int){
+        habitList.removeAt(position)
+        notifyDataSetChanged()
+    }
 
     class HabitViewHolder(itemView:View,listener:onItemClickListener):RecyclerView.ViewHolder(itemView){
         val habitName = itemView.findViewById<TextView>(R.id.habit_name)
@@ -64,6 +72,11 @@ RecyclerView.Adapter<HabitRecyclerviewAdapter.HabitViewHolder>(){
         if(holder.status.text.toString() == "completed"){
             val param = ((holder.statusText).layoutParams as MarginLayoutParams)
             param.setMargins(0,0,100,0)
+            holder.statusText.layoutParams = param
+
+        }else if (holder.status.text.toString() == "inactive"){
+            val param = ((holder.statusText).layoutParams as MarginLayoutParams)
+            param.setMargins(0,0,60,0)
             holder.statusText.layoutParams = param
 
         }else{

@@ -3,6 +3,7 @@ package com.saba.spark
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.navigation.NavigationBarView
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         supportActionBar?.hide()
 
         viewPager2 = findViewById(R.id.view_pager)

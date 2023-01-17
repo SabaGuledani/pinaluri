@@ -13,6 +13,7 @@
                 android:startColor="@color/purple_main_dark"
                 android:endColor="@color/purple_main_2" />
             <size android:width="30dp" android:height="30dp"/>
+
         </shape>
     </item>
 </selector>

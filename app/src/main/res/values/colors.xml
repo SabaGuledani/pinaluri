@@ -10,8 +10,13 @@
     <color name="purple_main">#6C4AB6</color>
     <color name="purple_main_dark">#4C2A97</color>
     <color name="purple_main_2">#8D72E1</color>
-    <color name="blue_purple">#8D9EFF</color>
+    <color name="blue_purple">#7F92FD</color>
     <color name="blue">#B9E0FF</color>
+    <color name="delete">#EB2151</color>
+    <color name="delete2">#a30e32</color>
+    <color name="white_shade">#52FFFFFF</color>
+
+
 
 
 

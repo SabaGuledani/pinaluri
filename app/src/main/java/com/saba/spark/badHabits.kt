@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,9 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -35,7 +38,6 @@ class badHabits : Fragment(R.layout.fragment_bad_habits) {
         binding = FragmentBadHabitsBinding.bind(view)
 
 
-
         var calendar = Calendar.getInstance()
         var today =
             ("${calendar.get(Calendar.YEAR)}" + "${calendar.get(Calendar.DAY_OF_YEAR)}").toInt()
@@ -48,6 +50,25 @@ class badHabits : Fragment(R.layout.fragment_bad_habits) {
         recyclerview.layoutManager = LinearLayoutManager(context)
         habitList = ArrayList()
 
+        val swipeGesture = object : SwipeGesture(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                when (direction) {
+                    ItemTouchHelper.RIGHT -> {
+                        var habitObjectRemove = habitRecyclerviewAdapter.getItem(viewHolder.bindingAdapterPosition)
+                        editor?.remove("today day: ${habitObjectRemove.habitName}")
+
+
+                        habitRecyclerviewAdapter.deleteItem(viewHolder.bindingAdapterPosition)
+
+                    }
+                }
+
+            }
+        }
+        val touchHelper = ItemTouchHelper(swipeGesture)
+        touchHelper.attachToRecyclerView(recyclerview)
+
+
         dbref = FirebaseDatabase.getInstance().getReference()
         habitRecyclerviewAdapter = HabitRecyclerviewAdapter(habitList)
         recyclerview.adapter = habitRecyclerviewAdapter
@@ -58,6 +79,21 @@ class badHabits : Fragment(R.layout.fragment_bad_habits) {
                 habitList.clear()
                 for (postsnapshot in snapshot.children) {
                     val habitobject = postsnapshot.getValue(Habit::class.java)
+                    if (habitobject != null) {
+                        if (today - sharedPrefs?.getInt(
+                                "today day ${habitobject.habitName}",
+                                1
+                            )!! >= 2
+                        ) {
+                            if (habitobject != null) {
+                                habitobject.status = "inactive"
+                                dbref.child("users").child(useruid.toString())
+                                    .child(habitobject.habitName).child("status")
+                                    .setValue("inactive")
+                                Log.d("tag", "habit")
+                            }
+                        }
+                    }
                     habitList.add(habitobject!!)
                 }
 
@@ -136,11 +172,6 @@ class badHabits : Fragment(R.layout.fragment_bad_habits) {
         }
 
 
-
-
-
-
-
         class HabitDialog(var position: Int) : DialogFragment() {
             var habitObject = habitList[position]
 
@@ -193,12 +224,15 @@ class badHabits : Fragment(R.layout.fragment_bad_habits) {
                     "Days remaining: " + (habitObject.habitprogress.toInt() - habitObject.habitprogressnow.toInt())
 
                 binding.progressTV.setOnLongClickListener {
+                    if (binding.statusTV.text == "status: inactive") {
+                        Toast.makeText(context, "hey maybe next time!", Toast.LENGTH_SHORT).show()
+                    } else {
 
-                    var lastTime = sharedPrefs?.getInt("today day ${habitObject.habitName}", 1)
+                        var lastTime = sharedPrefs?.getInt("today day ${habitObject.habitName}", 1)
 
 
 
-                    if (today != lastTime && habitObject.habitprogressnow != habitObject.habitprogress) {
+                        if (today != lastTime && habitObject.habitprogressnow != habitObject.habitprogress) {
 
                             dbref.child("users").child("$useruid").child("${habitObject.habitName}")
                                 .child("habitprogressnow")
@@ -206,33 +240,40 @@ class badHabits : Fragment(R.layout.fragment_bad_habits) {
                             editor?.putInt("today day ${habitObject.habitName}", today)
                             editor?.apply()
 
-                    } else {
-                        if(today==lastTime && habitObject.habitprogressnow != habitObject.habitprogress){
-                            Toast.makeText(context, "hey you already clicked today", Toast.LENGTH_SHORT)
-                                .show()
-                        }else{
-                            dbref.child("users").child("$useruid").child("${habitObject.habitName}")
-                                .child("status").setValue("completed")
-                            binding.statusTV.text ="status: completed"
+                        } else {
+                            if (today == lastTime && habitObject.habitprogressnow != habitObject.habitprogress) {
+                                Toast.makeText(
+                                    context,
+                                    "hey you already clicked today",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+                            } else {
+                                dbref.child("users").child("$useruid")
+                                    .child("${habitObject.habitName}")
+                                    .child("status").setValue("completed")
+                                binding.statusTV.text = "status: completed"
 
-                            Toast.makeText(context, "you successfully achieved your goal good job!", Toast.LENGTH_LONG).show()
+                                Toast.makeText(
+                                    context,
+                                    "you successfully achieved your goal good job!",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
                         }
                     }
                     true
 
                 }
-            binding.closeDialog.setOnClickListener {
-                dismiss()
-            }
-
+                binding.closeDialog.setOnClickListener {
+                    dismiss()
+                }
 
 
             }
 
 
         }
-
-
 
 
         fun showDialog(dialogFragment: DialogFragment) {

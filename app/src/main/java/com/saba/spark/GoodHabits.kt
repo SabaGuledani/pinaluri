@@ -10,13 +10,19 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import com.saba.spark.databinding.FragmentBadHabitsBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
+
 import com.saba.spark.databinding.FragmentGoodHabitsBinding
 
 
 
 class GoodHabits : Fragment(R.layout.fragment_good_habits) {
     private lateinit var binding: FragmentGoodHabitsBinding
+    private lateinit var dbref:DatabaseReference
+    private lateinit var times:ArrayList<Int>
+    private lateinit var habitMoneyArray:ArrayList<Double>
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentGoodHabitsBinding.bind(view)
@@ -26,7 +32,41 @@ class GoodHabits : Fragment(R.layout.fragment_good_habits) {
         val yearlySaving = binding.yearlySaving
         val startDate = binding.startDate
         val currentSavings = binding.currentSavings
+        dbref = FirebaseDatabase.getInstance().getReference()
+        val userUid = FirebaseAuth.getInstance().currentUser?.uid
+        times = ArrayList()
+        habitMoneyArray = ArrayList()
 
+        dbref.child("users").child("$userUid").addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                currentSavings.text = ""
+                var timesXmoney = 0.0
+                var dailyMoney = 0.0
+                for (postsnapshot in snapshot.children){
+                    times.clear()
+                    habitMoneyArray.clear()
+                    val habitobject = postsnapshot.getValue(Habit::class.java)
+                    if(habitobject != null){
+                        times.add(habitobject.habitprogressnow.toInt())
+                        habitMoneyArray.add(habitobject.dailyUseMoney.toDouble())
+                        dailyMoney += habitMoneyArray.sum()
+                        moneySpentPerDay.text = dailyMoney.toString() + " Gel"
+
+                        for (i in 0 until times.size){
+                             timesXmoney += times[i].toDouble() * habitMoneyArray[i]
+                        }
+
+                        currentSavings.text = timesXmoney.toString() + "Gel"
+
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
 
 
         editSpentMoney.setOnClickListener{
