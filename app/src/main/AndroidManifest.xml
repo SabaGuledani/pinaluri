@@ -27,7 +27,6 @@
                 android:value="" />
         </activity>
         <activity
-            android:theme="@style/SplashScreen"
             android:name=".MainActivity"
             android:exported="true">
 

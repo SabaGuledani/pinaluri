@@ -5,41 +5,38 @@
     android:layout_width="match_parent"
     android:layout_height="120dp"
     android:layout_margin="10dp"
-    android:background="@drawable/fragment_2_background"
-    android:padding="12dp"
+    android:background="@drawable/habit_item_back"
     >
+
 
 
     <TextView
         android:id="@+id/status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/asap_medium"
         android:text="status: "
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.78"
+        app:layout_constraintHorizontal_bias="0.84"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.35" />
+        app:layout_constraintVertical_bias="0.0" />
 
 
     <TextView
         android:id="@+id/active_status"
-        android:layout_width="70dp"
-        android:layout_height="17dp"
-        android:fontFamily="@font/asap_medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="completed"
-
         android:textColor="#1DFB67"
+
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/status"
         app:layout_constraintTop_toTopOf="parent"
-
-        />
+        app:layout_constraintVertical_bias="0.0" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -61,19 +58,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="8.5"
-            android:fontFamily="@font/raleway_bold"
             android:paddingLeft="19dp"
             android:text="name of habit"
-            android:gravity="start"
-            android:textColor="@color/purple_main_dark"
-
+            android:textColor="@color/white"
             android:textSize="25.5sp" />
 
         <TextView
             android:id="@+id/habit_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-black"
+            android:fontFamily="@font/asap_semibold"
             android:text="3/10"
             android:textColor="@color/white"
             android:textSize="24sp" />
@@ -98,7 +92,7 @@
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:forceDarkAllowed="false"
-        app:indicatorColor="#800080"
+        app:indicatorColor="@color/purple_main"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
