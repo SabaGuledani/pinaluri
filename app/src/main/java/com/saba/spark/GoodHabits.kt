@@ -51,6 +51,8 @@ class GoodHabits : Fragment(R.layout.fragment_good_habits) {
                         habitMoneyArray.add(habitobject.dailyUseMoney.toDouble())
                         dailyMoney += habitMoneyArray.sum()
                         moneySpentPerDay.text = dailyMoney.toString() + " Gel"
+                        monthlySaving.setText( (dailyMoney.toInt() * 30).toString() + "Gel")
+                        yearlySaving.setText( (dailyMoney.toInt() * 30 * 12).toString() + "Gel")
 
                         for (i in 0 until times.size){
                              timesXmoney += times[i].toDouble() * habitMoneyArray[i]

@@ -23,6 +23,7 @@
         android:id="@+id/name_poster"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"
         android:text="nickname"
         android:textSize="22sp"
@@ -33,11 +34,15 @@
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="-5dp"
+        android:fontFamily="@font/asap_regular"
         android:text="time"
+        android:textSize="11sp"
         android:textColor="#51606C"
-        app:layout_constraintStart_toEndOf="@+id/name_poster"
-        app:layout_constraintTop_toTopOf="@+id/name_poster" />
+        app:layout_constraintEnd_toEndOf="@+id/name_poster"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/name_poster"
+        app:layout_constraintTop_toBottomOf="@+id/name_poster" />
 
     <TextView
         android:id="@+id/date"
@@ -46,6 +51,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
         android:text="date"
+        android:fontFamily="@font/asap_regular"
         android:textColor="#51606C"
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -56,17 +62,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="46dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="25dp"
         android:text="text of achievement"
         android:textSize="16dp"
+        android:fontFamily="@font/asap_regular"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name_poster" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="30dp"
-        android:background="#bdb8b8"
+        android:layout_marginTop="40dp"
+        android:background="#54BDB8B8"
         android:forceDarkAllowed="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
