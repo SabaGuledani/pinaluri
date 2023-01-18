@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient"
+    android:background="#1E1D1D"
     tools:context=".LogIn">
 
     <TextView
@@ -15,10 +15,20 @@
         android:textColor="@color/white"
         android:textSize="27sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        android:layout_marginTop="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="wrap_content"
+        android:layout_height="250dp"
+        android:src="@drawable/loginpng"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -26,6 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
         android:orientation="vertical"
+        android:layout_marginTop="80dp"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -82,8 +93,6 @@
         </com.google.android.material.textfield.TextInputLayout>
 
 
-
-
     </LinearLayout>
 
     <Button
@@ -93,7 +102,8 @@
         android:backgroundTint="@color/purple_main_dark"
 
         android:forceDarkAllowed="false"
-        android:text="log in"
+        android:text="Log in"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -112,7 +122,7 @@
         android:elegantTextHeight="true"
         android:fontFamily="sans-serif-thin"
         android:text="I don't have an account"
-        android:textColor="@color/white"
+        android:textColor="#00FFFF"
         android:textSize="15sp"
         app:emojiCompatEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
@@ -130,7 +140,7 @@
         android:fitsSystemWindows="false"
         android:fontFamily="sans-serif-thin"
         android:text="I don't remember my password"
-        android:textColor="@color/white"
+        android:textColor="#00FFFF"
         android:textSize="15sp"
         app:drawableLeftCompat="@drawable/ic_baseline_question_mark_24"
         app:layout_constraintEnd_toEndOf="parent"

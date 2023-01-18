@@ -4,18 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue_purple"
+
     android:clickable="true">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:elevation="3dp"
-        android:background="@color/blue_purple">
+        android:background="#81FFFFFF">
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            >
             <androidx.appcompat.widget.Toolbar
 
                 android:id="@+id/exitIV"
@@ -24,16 +25,20 @@
                 android:paddingEnd="16dp"
                 android:paddingStart="6dp"
                 app:contentInsetStartWithNavigation="0dp"
-                app:navigationIcon="@drawable/ic_baseline_close_24" />
+                app:navigationIcon="@drawable/ic_baseline_close_24"
+                />
+
             <TextView
                 android:id="@+id/saveTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="save"
                 android:layout_gravity="end"
-                android:textSize="24sp"
                 android:layout_marginTop="16dp"
-                android:layout_marginRight="15dp"/>
+                android:layout_marginRight="15dp"
+                android:fontFamily="@font/raleway_bold"
+                android:text="save"
+                android:textColor="@color/purple_main_dark"
+                android:textSize="24sp" />
 
 
         </FrameLayout>
@@ -66,7 +71,7 @@
             app:boxCornerRadiusTopStart="15dp"
             app:boxStrokeColor="@color/black"
             app:boxStrokeWidth="2.5dp"
-            android:textColorHint="@color/black"
+            android:textColorHint="#8D000000"
 
 
             >
@@ -95,7 +100,7 @@
             app:startIconDrawable="@drawable/ic_baseline_calendar_month_24"
             app:boxStrokeColor="@color/black"
             app:boxStrokeWidth="2.5dp"
-            android:textColorHint="@color/black"
+            android:textColorHint="#8D000000"
 
             >
 
@@ -122,7 +127,7 @@
             app:startIconDrawable="@drawable/ic_baseline_attach_money_24"
             app:boxStrokeColor="@color/black"
             app:boxStrokeWidth="2.5dp"
-            android:textColorHint="@color/black"
+            android:textColorHint="#8D000000"
 
             >
 

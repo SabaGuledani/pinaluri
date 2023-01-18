@@ -8,8 +8,8 @@
     <item android:title="finances"
         android:id="@+id/GoodHabits"
         android:icon="@drawable/ic_baseline_account_balance_wallet_24" />
-    <item android:title="mesame"
+    <item android:title="community"
         android:id="@+id/UglyHabit"
-        android:icon="@drawable/ic_android_black_24dp"/>
+        android:icon="@drawable/ic_baseline_people_24"/>
 
 </menu>
