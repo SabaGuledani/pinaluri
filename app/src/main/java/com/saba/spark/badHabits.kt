@@ -59,20 +59,13 @@ class badHabits : Fragment(R.layout.fragment_bad_habits) {
                 when (direction) {
                     ItemTouchHelper.RIGHT -> {
 
-                        MaterialAlertDialogBuilder(requireContext())
-                            .setTitle("Delete goal")
-                            .setMessage("Are you sure?")
-                            .setNegativeButton("No") { dialog, which ->
-                                dialog.dismiss()
-                            }
-                            .setPositiveButton("Yes") { dialog, which ->
-                                var habitObjectToRemove = habitRecyclerviewAdapter.getItem(viewHolder.bindingAdapterPosition)
-                                editor?.remove("today day: ${habitObjectToRemove.habitName}")
-                                habitRecyclerviewAdapter.deleteItem(viewHolder.bindingAdapterPosition)
-                                dbref.child("users").child(useruid.toString()).child(habitObjectToRemove.habitName).removeValue()
-                                dialog.dismiss()
-                            }
-                            .show()
+
+                        var habitObjectToRemove =
+                            habitRecyclerviewAdapter.getItem(viewHolder.bindingAdapterPosition)
+                        editor?.remove("today day: ${habitObjectToRemove.habitName}")
+                        habitRecyclerviewAdapter.deleteItem(viewHolder.bindingAdapterPosition)
+                        dbref.child("users").child(useruid.toString())
+                            .child(habitObjectToRemove.habitName).removeValue()
 
 
                     }
@@ -97,8 +90,12 @@ class badHabits : Fragment(R.layout.fragment_bad_habits) {
                 for (postsnapshot in snapshot.children) {
                     val habitobject = postsnapshot.getValue(Habit::class.java)
                     if (habitobject != null) {
-                        if (today - sharedPrefs?.getInt("today day ${habitobject.habitName}", today)!! >= 2
-                            && habitobject.habitprogressnow != habitobject.habitprogress) {
+                        if (today - sharedPrefs?.getInt(
+                                "today day ${habitobject.habitName}",
+                                today
+                            )!! >= 2
+                            && habitobject.habitprogressnow != habitobject.habitprogress
+                        ) {
                             habitobject.status = "inactive"
                             dbref.child("users").child(useruid.toString())
                                 .child(habitobject.habitName).child("status")
@@ -170,7 +167,7 @@ class badHabits : Fragment(R.layout.fragment_bad_habits) {
 
                         val habitObject =
                             Habit(habitName, habitProgress, dailyUseMoney, status, progressnow)
-                        val savings = MoneyClass(dailyUseMoney,progressnow)
+                        val savings = MoneyClass(dailyUseMoney, progressnow)
                         dbref.child("users").child("$useruid").child(habitName)
                             .setValue(habitObject)
                         dbref.child("current").child(useruid.toString()).child(habitName)
@@ -251,8 +248,10 @@ class badHabits : Fragment(R.layout.fragment_bad_habits) {
                             dbref.child("users").child("$useruid").child(habitObject.habitName)
                                 .child("habitprogressnow")
                                 .setValue((habitObject.habitprogressnow.toInt() + 1).toString())
-                            dbref.child("current").child(useruid.toString()).child(habitObject.habitName)
-                                .child("habitProgressNow").setValue((habitObject.habitprogressnow.toInt() + 1).toString())
+                            dbref.child("current").child(useruid.toString())
+                                .child(habitObject.habitName)
+                                .child("habitProgressNow")
+                                .setValue((habitObject.habitprogressnow.toInt() + 1).toString())
                             editor?.putInt("today day ${habitObject.habitName}", today)
                             editor?.apply()
 
@@ -285,7 +284,8 @@ class badHabits : Fragment(R.layout.fragment_bad_habits) {
                     dismiss()
                 }
                 binding.editmoney.setOnClickListener {
-                    var inflate = LayoutInflater.from(requireContext()).inflate(R.layout.material_edittext,null,false)
+                    var inflate = LayoutInflater.from(requireContext())
+                        .inflate(R.layout.material_edittext, null, false)
 
                     MaterialAlertDialogBuilder(requireContext())
                         .setMessage("How much money do you spend daily?")
@@ -294,7 +294,7 @@ class badHabits : Fragment(R.layout.fragment_bad_habits) {
                             dialog.dismiss()
                         }
                         .setPositiveButton("Apply") { dialog, which ->
-                            var editText:TextInputEditText = inflate.findViewById(R.id.text_field)
+                            var editText: TextInputEditText = inflate.findViewById(R.id.text_field)
                             dbref.child("current").child(useruid.toString())
                                 .child(habitObject.habitName)
                                 .setValue(editText.text.toString())

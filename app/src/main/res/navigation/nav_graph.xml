@@ -23,7 +23,11 @@
         android:id="@+id/RegistrationFragment"
         android:name="com.saba.spark.RegistrationFragment"
         android:label="registration"
-        tools:layout="@layout/fragment_registration"/>
+        tools:layout="@layout/fragment_registration">
+        <action
+            android:id="@+id/action_RegistrationFragment_to_profile_setting"
+            app:destination="@id/profile_setting" />
+    </fragment>
     <fragment
         android:id="@+id/ChangePassword"
         android:name="com.saba.spark.PasswordChangeFragment"
@@ -37,6 +41,21 @@
         <action
             android:id="@+id/action_resetPasswordFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profile_setting"
+        android:name="com.saba.spark.ProfileSettingFragment"
+        android:label="profile_setting"
+        tools:layout="@layout/fragment_profile_setting">
+
+        <argument
+            android:name="email"
+            app:argType="string"
+            android:defaultValue="email" />
+        <argument
+            android:name="password"
+            app:argType="string"
+            android:defaultValue="password" />
     </fragment>
 
 

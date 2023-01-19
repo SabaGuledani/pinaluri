@@ -1,59 +1,134 @@
 package com.saba.spark
 
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
+import com.saba.spark.databinding.FragmentProfileSettingBinding
+import java.io.ByteArrayOutputStream
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ProfileSettingFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class ProfileSettingFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class ProfileSettingFragment : Fragment(R.layout.fragment_profile_setting) {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var binding: FragmentProfileSettingBinding
+    private lateinit var email: String
+    private lateinit var password: String
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile_setting, container, false)
-    }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ProfileSettingFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ProfileSettingFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    private var imageSet = false
+
+
+    private var getImageFromGallery =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let {
+                Glide.with(this)
+                    .load(uri)
+                    .circleCrop()
+                    .into(binding.circleimg)
+
             }
+            imageSet = true
+        }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding = FragmentProfileSettingBinding.bind(view)
+
+        val database = Firebase.database("https://spark-1e90d-default-rtdb.firebaseio.com/")
+        val myRef = database.reference
+        var storageRef = Firebase.storage.reference
+        var auth = FirebaseAuth.getInstance().currentUser?.uid
+
+        email = ProfileSettingFragmentArgs.fromBundle(requireArguments()).email
+        password = ProfileSettingFragmentArgs.fromBundle(requireArguments()).password
+
+        binding.circleimg.setOnClickListener {
+            if (ContextCompat.checkSelfPermission(
+                    requireActivity().applicationContext,
+                    android.Manifest.permission.READ_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    requireActivity(),
+                    arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
+                    1
+                )
+
+            } else {
+                getImageFromGallery.launch("image/*")
+            }
+        }
+
+
+        binding.registerBtn.setOnClickListener {
+            var name = binding.name.editText?.text.toString()
+
+            if (binding.circleimg.drawable != null && imageSet) {
+                val imageRef = storageRef.child("images/${auth}.jpg")
+                val bitmap = getBitmapFromView(binding.circleimg)
+                val baos = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                val data = baos.toByteArray()
+
+                var uploadTask = imageRef.putBytes(data)
+                uploadTask.addOnFailureListener {
+                    Toast.makeText(
+                        activity,
+                        "An Error Has Occurred, Try a Different Image",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                uploadTask.addOnSuccessListener {
+                    var profileImg = "images/${auth}.jpg"
+                    var profileObject = userProfile(auth.toString(),name,profileImg)
+                    myRef.child("profile").child(auth.toString())
+                        .setValue(profileObject)
+
+                    val intent = Intent(context, MainActivity::class.java)
+                    startActivity(intent)
+                    activity?.finish()
+
+
+                }
+            } else {
+                Toast.makeText(activity, "Select An Image", Toast.LENGTH_SHORT).show()
+            }
+
+        }
+
+
     }
+
+
 }
+
+private fun getBitmapFromView(view: View): Bitmap {
+    val bitmap = Bitmap.createBitmap(
+        view.width, view.height, Bitmap.Config.ARGB_8888
+    )
+    val canvas = Canvas(bitmap)
+    view.draw(canvas)
+    return bitmap
+}
+
+
+
+
+
+

@@ -40,7 +40,7 @@
 
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/circleProfileImg"
+        android:id="@+id/circleImg"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="center"
@@ -60,7 +60,7 @@
         android:layout_marginTop="5dp"
         android:text="nickname"
         android:textSize="22sp"
-        app:layout_constraintStart_toEndOf="@+id/circleProfileImg"
+        app:layout_constraintStart_toEndOf="@+id/circleImg"
         app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

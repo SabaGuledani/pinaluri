@@ -13,12 +13,15 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.saba.spark.databinding.DialogShareAchievementBinding
 import com.saba.spark.databinding.FragmentUglyHabitBinding
 import kotlinx.coroutines.NonDisposableHandle.parent
@@ -49,9 +52,16 @@ class UglyHabit : Fragment(R.layout.fragment_ugly_habit) {
         recyclerView.adapter = shareRecyclerViewAdapter
         dbref = FirebaseDatabase.getInstance().getReference()
         habitList = ArrayList()
+        val storageRef = Firebase.storage.reference
 
 
 
+        storageRef.child("images/${senderuid}.jpg").downloadUrl.addOnSuccessListener {
+            Glide.with(requireActivity())
+                .load(it)
+                .circleCrop()
+                .into(binding.circleimg)
+        }
 
 
         dbref.child("share").addValueEventListener(object : ValueEventListener {
@@ -90,6 +100,29 @@ class UglyHabit : Fragment(R.layout.fragment_ugly_habit) {
 
             override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
                 super.onViewCreated(view, savedInstanceState)
+                dbref.child("profile").child(senderuid.toString()).addValueEventListener(object :ValueEventListener{
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        var profileObject = snapshot.getValue(userProfile::class.java)
+                        if(profileObject != null){
+
+                            binding.namePoster.text = profileObject.profileName
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        var miki  = "miki"
+                        var mausi = "mausi"
+                        var mikimausi = miki+mausi
+                    }
+                })
+                storageRef.child("images/${senderuid}.jpg").downloadUrl.addOnSuccessListener {
+                    Glide.with(requireActivity())
+                        .load(it)
+                        .circleCrop()
+                        .into(binding.circleImg)
+                }
+
+
                 var adapter = ArrayAdapter<String>(requireContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,habitList)
                 binding.spinnerHabit.adapter = adapter
                 dbref.child("users").child(senderuid.toString()).addValueEventListener(object : ValueEventListener {
@@ -102,9 +135,7 @@ class UglyHabit : Fragment(R.layout.fragment_ugly_habit) {
                                 habitList.add(habitobject.habitName)
                             }
                         }
-                        /*binding.addAchievement.setOnClickListener {
-                            binding.spinnerHabit.visibility = View.VISIBLE
-                        }*/
+
 
                         adapter.notifyDataSetChanged()
 
@@ -113,6 +144,9 @@ class UglyHabit : Fragment(R.layout.fragment_ugly_habit) {
                     override fun onCancelled(error: DatabaseError) {
                     }
                 })
+
+
+
                 var selectedHabit = ""
                 binding.spinnerHabit.onItemSelectedListener = object :AdapterView.OnItemSelectedListener{
                     override fun onItemSelected(

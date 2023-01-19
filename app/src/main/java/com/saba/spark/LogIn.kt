@@ -35,14 +35,14 @@ class LogIn : Fragment(R.layout.fragment_log_in) {
                     }
                 }
         }
-        /*
+
         binding.changePassword.setOnClickListener {
             val action = LogInDirections.actionLoginFragmentToChangePassword()
             findNavController().navigate(action)
 
         }
 
-         */
+
         binding.noAcc.setOnClickListener {
             val action = LogInDirections.actionLoginFragmentToRegistrationFragment()
             findNavController().navigate(action)
