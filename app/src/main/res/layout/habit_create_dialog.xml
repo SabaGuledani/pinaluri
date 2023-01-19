@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    android:background="#212121"
     android:clickable="true">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:elevation="3dp"
-        android:background="#81FFFFFF">
+        android:background="#212121">
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -17,6 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.saba.spark.databinding.FragmentBadHabitsBinding
@@ -94,8 +97,8 @@ class badHabits : Fragment(R.layout.fragment_bad_habits) {
                 for (postsnapshot in snapshot.children) {
                     val habitobject = postsnapshot.getValue(Habit::class.java)
                     if (habitobject != null) {
-                        if (today - sharedPrefs?.getInt("today day ${habitobject.habitName}", 1)!! >= 2
-                            && habitobject.habitprogressnow!= habitobject.habitprogress) {
+                        if (today - sharedPrefs?.getInt("today day ${habitobject.habitName}", today)!! >= 2
+                            && habitobject.habitprogressnow != habitobject.habitprogress) {
                             habitobject.status = "inactive"
                             dbref.child("users").child(useruid.toString())
                                 .child(habitobject.habitName).child("status")
@@ -167,9 +170,11 @@ class badHabits : Fragment(R.layout.fragment_bad_habits) {
 
                         val habitObject =
                             Habit(habitName, habitProgress, dailyUseMoney, status, progressnow)
-
+                        val savings = MoneyClass(dailyUseMoney,progressnow)
                         dbref.child("users").child("$useruid").child(habitName)
                             .setValue(habitObject)
+                        dbref.child("current").child(useruid.toString()).child(habitName)
+                            .setValue(savings)
 
                         dismiss()
                     }
@@ -243,9 +248,11 @@ class badHabits : Fragment(R.layout.fragment_bad_habits) {
 
                         if (today != lastTime && habitObject.habitprogressnow != habitObject.habitprogress) {
 
-                            dbref.child("users").child("$useruid").child("${habitObject.habitName}")
+                            dbref.child("users").child("$useruid").child(habitObject.habitName)
                                 .child("habitprogressnow")
                                 .setValue((habitObject.habitprogressnow.toInt() + 1).toString())
+                            dbref.child("current").child(useruid.toString()).child(habitObject.habitName)
+                                .child("habitProgressNow").setValue((habitObject.habitprogressnow.toInt() + 1).toString())
                             editor?.putInt("today day ${habitObject.habitName}", today)
                             editor?.apply()
 
@@ -276,6 +283,25 @@ class badHabits : Fragment(R.layout.fragment_bad_habits) {
                 }
                 binding.closeDialog.setOnClickListener {
                     dismiss()
+                }
+                binding.editmoney.setOnClickListener {
+                    var inflate = LayoutInflater.from(requireContext()).inflate(R.layout.material_edittext,null,false)
+
+                    MaterialAlertDialogBuilder(requireContext())
+                        .setMessage("How much money do you spend daily?")
+                        .setView(inflate)
+                        .setNegativeButton("Cancel") { dialog, which ->
+                            dialog.dismiss()
+                        }
+                        .setPositiveButton("Apply") { dialog, which ->
+                            var editText:TextInputEditText = inflate.findViewById(R.id.text_field)
+                            dbref.child("current").child(useruid.toString())
+                                .child(habitObject.habitName)
+                                .setValue(editText.text.toString())
+                            dialog.dismiss()
+
+                        }
+                        .show()
                 }
 
 

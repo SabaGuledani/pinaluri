@@ -24,6 +24,8 @@ class GoodHabits : Fragment(R.layout.fragment_good_habits) {
     private lateinit var dbref: DatabaseReference
     private lateinit var times: ArrayList<Int>
     private lateinit var habitMoneyArray: ArrayList<Double>
+    private lateinit var timesSpentList:ArrayList<Int>
+    private lateinit var moneySavingsList:ArrayList<Double>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -44,6 +46,7 @@ class GoodHabits : Fragment(R.layout.fragment_good_habits) {
                 currentSavings.text = ""
                 var timesXmoney = 0.0
                 var dailyMoney = 0.0
+
                 for (postsnapshot in snapshot.children) {
                     times.clear()
                     habitMoneyArray.clear()
@@ -60,7 +63,7 @@ class GoodHabits : Fragment(R.layout.fragment_good_habits) {
                             timesXmoney += times[i].toDouble() * habitMoneyArray[i]
                         }
 
-                        currentSavings.text = timesXmoney.toString() + "Gel"
+
 
                     }
                 }
@@ -73,6 +76,39 @@ class GoodHabits : Fragment(R.layout.fragment_good_habits) {
             }
 
         })
+        moneySavingsList = ArrayList()
+        timesSpentList = ArrayList()
+        dbref.child("current").child(userUid.toString())
+            .addValueEventListener(object :ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+
+                    var timesXmoney = 0.0
+
+                    for(postsnapshot in snapshot.children){
+                        moneySavingsList.clear()
+                        timesSpentList.clear()
+
+                        val current = postsnapshot.getValue(MoneyClass::class.java)
+                        if(current!=null){
+                            timesSpentList.add(current.habitProgressNow.toInt())
+                            moneySavingsList.add(current.dailyUseMoney.toDouble())
+                            for (i in 0 until times.size) {
+                                timesXmoney += timesSpentList[i].toDouble() * moneySavingsList[i]
+                            }
+
+
+
+                        }
+                    }
+                    currentSavings.text = timesXmoney.toString() + "Gel"
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    var miki  = "miki"
+                    var mausi = "mausi"
+                    var mikimausi = miki+mausi
+                }
+            })
 
 
         editSpentMoney.setOnClickListener {
