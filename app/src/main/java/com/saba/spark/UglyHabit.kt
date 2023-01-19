@@ -62,12 +62,15 @@ class UglyHabit : Fragment(R.layout.fragment_ugly_habit) {
                     shareList.add(shareObject!!)
                 }
                 shareRecyclerViewAdapter.notifyDataSetChanged()
-                recyclerView.scrollToPosition(shareList.size -1 )
+                recyclerView.scrollToPosition(shareList.size - 1 )
 
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+                var miki  = "miki"
+                var mausi = "mausi"
+                var mikimausi = miki+mausi
+
             }
 
         })

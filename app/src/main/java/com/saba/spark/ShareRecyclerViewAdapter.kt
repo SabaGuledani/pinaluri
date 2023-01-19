@@ -41,7 +41,6 @@ class ShareRecyclerViewAdapter(val context: Context, val sharedAchievement:Array
             holder.achievedGoal.visibility = View.GONE
         }
 
-
         Glide.with(context)
             .load(sharedItem.profileImg)
             .fitCenter()

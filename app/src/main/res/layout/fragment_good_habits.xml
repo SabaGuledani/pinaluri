@@ -7,12 +7,20 @@
     android:orientation="vertical"
     tools:context=".GoodHabits">
 
+    <ImageView
+        android:id="@+id/logout"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/baseline_logout_24"
+        android:layout_gravity="end"
+        android:layout_margin="10dp"/>
+
 
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="15dp"
         android:layout_marginRight="20dp"
         android:background="@drawable/fragment_2_background"
         android:padding="15dp">
@@ -203,7 +211,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
-
+        android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
         android:textColor="#B2FFFFFF"
         android:text="Bad habits interrupt your life and prevent you from accomplishing your goals. They endanger your health — both mentally and physically. And they waste your time and energy." />

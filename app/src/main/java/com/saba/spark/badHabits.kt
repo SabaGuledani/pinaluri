@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.saba.spark.databinding.FragmentBadHabitsBinding
@@ -54,11 +55,22 @@ class badHabits : Fragment(R.layout.fragment_bad_habits) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 when (direction) {
                     ItemTouchHelper.RIGHT -> {
-                        var habitObjectRemove = habitRecyclerviewAdapter.getItem(viewHolder.bindingAdapterPosition)
-                        editor?.remove("today day: ${habitObjectRemove.habitName}")
 
+                        MaterialAlertDialogBuilder(requireContext())
+                            .setTitle("Delete goal")
+                            .setMessage("Are you sure?")
+                            .setNegativeButton("No") { dialog, which ->
+                                dialog.dismiss()
+                            }
+                            .setPositiveButton("Yes") { dialog, which ->
+                                var habitObjectToRemove = habitRecyclerviewAdapter.getItem(viewHolder.bindingAdapterPosition)
+                                editor?.remove("today day: ${habitObjectToRemove.habitName}")
+                                habitRecyclerviewAdapter.deleteItem(viewHolder.bindingAdapterPosition)
+                                dbref.child("users").child(useruid.toString()).child(habitObjectToRemove.habitName).removeValue()
+                                dialog.dismiss()
+                            }
+                            .show()
 
-                        habitRecyclerviewAdapter.deleteItem(viewHolder.bindingAdapterPosition)
 
                     }
                 }
@@ -82,18 +94,13 @@ class badHabits : Fragment(R.layout.fragment_bad_habits) {
                 for (postsnapshot in snapshot.children) {
                     val habitobject = postsnapshot.getValue(Habit::class.java)
                     if (habitobject != null) {
-                        if (today - sharedPrefs?.getInt(
-                                "today day ${habitobject.habitName}",
-                                1
-                            )!! >= 2
-                        ) {
-                            if (habitobject != null) {
-                                habitobject.status = "inactive"
-                                dbref.child("users").child(useruid.toString())
-                                    .child(habitobject.habitName).child("status")
-                                    .setValue("inactive")
-                                Log.d("tag", "habit")
-                            }
+                        if (today - sharedPrefs?.getInt("today day ${habitobject.habitName}", 1)!! >= 2
+                            && habitobject.habitprogressnow!= habitobject.habitprogress) {
+                            habitobject.status = "inactive"
+                            dbref.child("users").child(useruid.toString())
+                                .child(habitobject.habitName).child("status")
+                                .setValue("inactive")
+                            Log.d("tag", "habit")
                         }
                     }
                     habitList.add(habitobject!!)
