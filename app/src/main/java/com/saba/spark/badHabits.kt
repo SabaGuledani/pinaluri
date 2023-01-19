@@ -69,6 +69,8 @@ class badHabits : Fragment(R.layout.fragment_bad_habits) {
         touchHelper.attachToRecyclerView(recyclerview)
 
 
+
+
         dbref = FirebaseDatabase.getInstance().getReference()
         habitRecyclerviewAdapter = HabitRecyclerviewAdapter(habitList)
         recyclerview.adapter = habitRecyclerviewAdapter

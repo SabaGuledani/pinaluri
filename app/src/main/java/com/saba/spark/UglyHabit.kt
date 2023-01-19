@@ -1,11 +1,17 @@
 package com.saba.spark
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.SpinnerAdapter
 import android.widget.Toast
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -13,6 +19,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.saba.spark.databinding.DialogShareAchievementBinding
 import com.saba.spark.databinding.FragmentUglyHabitBinding
 import kotlinx.coroutines.NonDisposableHandle.parent
 import java.text.SimpleDateFormat
@@ -23,32 +30,40 @@ import kotlin.collections.ArrayList
 
 
 class UglyHabit : Fragment(R.layout.fragment_ugly_habit) {
-    private lateinit var binding:FragmentUglyHabitBinding
-    private lateinit var shareList:ArrayList<SharedAchievement>
-    private lateinit var dbref:DatabaseReference
-    private lateinit var shareRecyclerViewAdapter:ShareRecyclerViewAdapter
+    private lateinit var binding: FragmentUglyHabitBinding
+    private lateinit var shareList: ArrayList<SharedAchievement>
+    private lateinit var dbref: DatabaseReference
+    private lateinit var shareRecyclerViewAdapter: ShareRecyclerViewAdapter
+    private lateinit var habitList:ArrayList<String>
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentUglyHabitBinding.bind(view)
         shareList = ArrayList()
         val senderuid = FirebaseAuth.getInstance().currentUser?.uid
         val recyclerView = binding.recyclerViewShare
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        shareRecyclerViewAdapter = ShareRecyclerViewAdapter(requireContext(),shareList)
+        var linearLayoutManager = LinearLayoutManager(context)
+        linearLayoutManager.reverseLayout = true
+        linearLayoutManager.stackFromEnd = true
+        recyclerView.layoutManager = linearLayoutManager
+        shareRecyclerViewAdapter = ShareRecyclerViewAdapter(requireContext(), shareList)
         recyclerView.adapter = shareRecyclerViewAdapter
         dbref = FirebaseDatabase.getInstance().getReference()
+        habitList = ArrayList()
 
 
 
 
-        dbref.child("share").addValueEventListener(object :ValueEventListener{
+
+        dbref.child("share").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 shareList.clear()
-                for (postsnapshot in snapshot.children){
+                for (postsnapshot in snapshot.children) {
                     val shareObject = postsnapshot.getValue(SharedAchievement::class.java)
                     shareList.add(shareObject!!)
                 }
                 shareRecyclerViewAdapter.notifyDataSetChanged()
+                recyclerView.scrollToPosition(shareList.size -1 )
+
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -56,44 +71,127 @@ class UglyHabit : Fragment(R.layout.fragment_ugly_habit) {
             }
 
         })
+        var shareTi = binding.shareTi
+        
+        
+        class ShareEditDialog : DialogFragment() {
+            private lateinit var binding: DialogShareAchievementBinding
+            override fun onCreateView(
+                inflater: LayoutInflater,
+                container: ViewGroup?,
+                savedInstanceState: Bundle?
+            ): View? {
+                binding = DialogShareAchievementBinding.inflate(inflater, container, false)
+                return binding.root
+            }
 
-        binding.publishImgBtn.setOnClickListener {
-            val timeglobal = Calendar.getInstance().time
-            val formatter = SimpleDateFormat("HH:mm")
-            var formatterDate = SimpleDateFormat("yyyy-MM-dd")
+            override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+                super.onViewCreated(view, savedInstanceState)
+                var adapter = ArrayAdapter<String>(requireContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,habitList)
+                binding.spinnerHabit.adapter = adapter
+                dbref.child("users").child(senderuid.toString()).addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        habitList.clear()
+                        habitList.add("")
+                        for (postsnapshot in snapshot.children) {
+                            val habitobject = postsnapshot.getValue(Habit::class.java)
+                            if (habitobject != null && habitobject.habitprogressnow == habitobject.habitprogress) {
+                                habitList.add(habitobject.habitName)
+                            }
+                        }
+                        /*binding.addAchievement.setOnClickListener {
+                            binding.spinnerHabit.visibility = View.VISIBLE
+                        }*/
 
-            val time = formatter.format(timeglobal)
-            val date = formatterDate.format(timeglobal)
-
-
-            dbref.child("profile").child("$senderuid").get()
-                .addOnSuccessListener {
-                    if(it.exists()){
-                        val senderuid = senderuid
-                        val posterImg = it.child("profileImg").value.toString()
-                        val posterName = it.child("profileName").value.toString()
-                        val time = time
-                        val date = date
-                        val achievement = binding.habitet.editText?.text.toString()
-
-                        val shareObject = SharedAchievement(senderuid,posterImg,posterName,time, date, achievement)
-
-                        dbref.child("share").push().setValue(shareObject)
+                        adapter.notifyDataSetChanged()
 
 
+                    }
+                    override fun onCancelled(error: DatabaseError) {
+                    }
+                })
+                var selectedHabit = ""
+                binding.spinnerHabit.onItemSelectedListener = object :AdapterView.OnItemSelectedListener{
+                    override fun onItemSelected(
+                        adapterView: AdapterView<*>?,
+                        view: View?,
+                        position: Int,
+                        id: Long
+                    ) {
+                        selectedHabit = adapterView?.getItemAtPosition(position).toString()
+
+                    }
+                    override fun onNothingSelected(p0: AdapterView<*>?) {
                     }
                 }
 
 
+                binding.sharebtn.setOnClickListener {
+                    val timeglobal = Calendar.getInstance().time
+                    val formatter = SimpleDateFormat("HH:mm")
+                    var formatterDate = SimpleDateFormat("yyyy-MM-dd")
+
+                    val time = formatter.format(timeglobal)
+                    val date = formatterDate.format(timeglobal)
 
 
+                    dbref.child("profile").child("$senderuid").get()
+                        .addOnSuccessListener {
+                            if (it.exists()) {
+                                val senderuid = senderuid
+                                val posterImg = it.child("profileImg").value.toString()
+                                val posterName = it.child("profileName").value.toString()
+                                val time = time
+                                val date = date
+                                var posttext = binding.postText.editText?.text.toString()
+                                var select = binding.spinnerHabit.selectedItem.toString()
+
+
+                                val shareObject = SharedAchievement(
+                                    senderuid,
+                                    posterImg,
+                                    posterName,
+                                    time,
+                                    date,
+                                    posttext,
+                                    select
+
+                                )
+
+                                dbref.child("share").push().setValue(shareObject)
+
+                                dismiss()
+                                shareTi.clearFocus()
+                            }
+                        }
+                }
+
+                binding.exitIV.setOnClickListener {
+                    dismiss()
+                    shareTi.clearFocus()
+                }
+            }
+        }
+        shareTi.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                showDialog(ShareEditDialog())
+            }
         }
 
 
+//Xoda reference.child.downloadurl.addonsuccesslistener{ } gamoviyene
+        // TODO: iyos es aq
+    }
 
+    fun showDialog(dialogFragment: DialogFragment) {
+        val fragmentManager = parentFragmentManager
+        val newFragment = dialogFragment
+
+        val transaction = fragmentManager.beginTransaction()
+
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+        transaction.add(android.R.id.content, newFragment).addToBackStack(null).commit()
 
     }
-//Xoda reference.child.downloadurl.addonsuccesslistener{ } gamoviyene
-    // TODO: iyos es aq
 }
 

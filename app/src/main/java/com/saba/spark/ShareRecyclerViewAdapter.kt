@@ -19,6 +19,7 @@ class ShareRecyclerViewAdapter(val context: Context, val sharedAchievement:Array
         val time = itemView.findViewById<TextView>(R.id.time)
         val date = itemView.findViewById<TextView>(R.id.date)
         val achievement = itemView.findViewById<TextView>(R.id.achievement)
+        val achievedGoal = itemView.findViewById<TextView>(R.id.achieved_goal)
 
     }
 
@@ -33,6 +34,14 @@ class ShareRecyclerViewAdapter(val context: Context, val sharedAchievement:Array
         holder.achievement.text = sharedItem.achievement
         holder.date.text = sharedItem.date
         holder.time.text = sharedItem.time
+        if(sharedItem.selectedHabit != ""){
+            holder.achievedGoal.text = "achieved desired goal: "+ sharedItem.selectedHabit
+            holder.achievedGoal.visibility = View.VISIBLE
+        }else{
+            holder.achievedGoal.visibility = View.GONE
+        }
+
+
         Glide.with(context)
             .load(sharedItem.profileImg)
             .fitCenter()

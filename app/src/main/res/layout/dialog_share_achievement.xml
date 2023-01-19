@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#212121"
     android:clickable="true"
     android:focusable="true">
 
@@ -64,7 +65,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/email"
+        android:id="@+id/postText"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_marginTop="25dp"
         android:layout_width="match_parent"
@@ -100,6 +101,29 @@
         android:layout_marginTop="15dp"
         android:drawableLeft="@drawable/baseline_military_tech_24"
         android:textSize="14sp"/>
+    <Spinner
+        android:id="@+id/spinnerHabit"
+        android:entries="@array/arr"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="15dp"
+        />
+
+    <Button
+        android:id="@+id/sharebtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_share"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="50dp"
+        android:text="share your achievment"
+        android:textColor="#D0FFFFFF"
+        android:fontFamily="@font/asap_bold"
+        android:textSize="16sp"/>
+
+
+
 
 
 

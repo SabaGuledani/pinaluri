@@ -31,6 +31,19 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/achieved_goal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:maxWidth="160dp"
+        android:text=""
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@+id/name_poster"
+        app:layout_constraintTop_toTopOf="@+id/name_poster"
+        android:visibility="gone"/>
+
+    <TextView
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
