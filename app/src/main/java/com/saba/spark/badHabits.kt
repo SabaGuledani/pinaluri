@@ -41,14 +41,14 @@ class badHabits : Fragment(R.layout.fragment_bad_habits) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentBadHabitsBinding.bind(view)
 
+        var useruid = FirebaseAuth.getInstance().currentUser?.uid
 
         var calendar = Calendar.getInstance()
         var today =
             ("${calendar.get(Calendar.YEAR)}" + "${calendar.get(Calendar.DAY_OF_YEAR)}").toInt()
-        var sharedPrefs = context?.getSharedPreferences("date", Context.MODE_PRIVATE)
+        var sharedPrefs = context?.getSharedPreferences(useruid.toString(), Context.MODE_PRIVATE)
         var editor = sharedPrefs?.edit()
 
-        var useruid = FirebaseAuth.getInstance().currentUser?.uid
 
         val recyclerview = binding.recyclerviewHabit
         recyclerview.layoutManager = LinearLayoutManager(context)
@@ -297,6 +297,7 @@ class badHabits : Fragment(R.layout.fragment_bad_habits) {
                             var editText: TextInputEditText = inflate.findViewById(R.id.text_field)
                             dbref.child("current").child(useruid.toString())
                                 .child(habitObject.habitName)
+                                .child("dailyUseMoney")
                                 .setValue(editText.text.toString())
                             dialog.dismiss()
 

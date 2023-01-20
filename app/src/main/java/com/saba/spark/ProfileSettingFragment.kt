@@ -77,7 +77,6 @@ class ProfileSettingFragment : Fragment(R.layout.fragment_profile_setting) {
 
 
         binding.registerBtn.setOnClickListener {
-            var name = binding.name.editText?.text.toString()
 
             if (binding.circleimg.drawable != null && imageSet) {
                 val imageRef = storageRef.child("images/${auth}.jpg")
@@ -95,15 +94,20 @@ class ProfileSettingFragment : Fragment(R.layout.fragment_profile_setting) {
                     ).show()
                 }
                 uploadTask.addOnSuccessListener {
-                    var profileImg = "images/${auth}.jpg"
-                    var profileObject = userProfile(auth.toString(),name,profileImg)
-                    myRef.child("profile").child(auth.toString())
-                        .setValue(profileObject)
+                    var name = binding.name.editText?.text.toString()
+                    if(name!= "".trim()) {
 
-                    val intent = Intent(context, MainActivity::class.java)
-                    startActivity(intent)
-                    activity?.finish()
-
+                        var profileImg = "images/${auth}.jpg"
+                        var profileObject = userProfile(auth.toString(), name, profileImg)
+                        myRef.child("profile").child(auth.toString())
+                            .setValue(profileObject)
+                        val intent = Intent(context, MainActivity::class.java)
+                        startActivity(intent)
+                        activity?.finish()
+                    }else{
+                        Toast.makeText(requireContext(), "name is empty!", Toast.LENGTH_SHORT)
+                            .show()
+                    }
 
                 }
             } else {

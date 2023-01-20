@@ -46,7 +46,7 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
 
                     }
             }else {
-                Toast.makeText(context, "enter password correctly", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Passwords don't match", Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -74,6 +74,7 @@
         android:id="@+id/achievement"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:maxWidth="330dp"
         android:layout_marginLeft="46dp"
         android:layout_marginTop="25dp"
         android:text="text of achievement"
